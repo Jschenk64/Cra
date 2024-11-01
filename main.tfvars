@@ -6,6 +6,6 @@ availability_zones   = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
 instance_ami         = "ami-08ec94f928cf25a9d"
 instance_type        = "t2.micro"
 key_name             = "mse-svh105"
-security_group_id    = "sg-063eef2831daada60"
+security_group_id    = "sg-087bbf47a2d760634"
 load_balancer_names  = ["CRA-LB1", "CRA-LB2"]
 target_group_names   = ["CRA-Target1", "CRA-Target2"]
