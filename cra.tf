@@ -111,7 +111,7 @@ resource "aws_instance" "cra_pub_server1" {
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.cra_pub_subnet1.id
   key_name        = "mse-svh105"
-  vpc_security_group_ids = ["sg-063eef2831daada60"]
+  vpc_security_group_ids = ["sg-087bbf47a2d760634"]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -132,7 +132,7 @@ resource "aws_instance" "cra_pub_server2" {
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.cra_pub_subnet1.id
   key_name        = "mse-svh105"
-  vpc_security_group_ids = ["sg-063eef2831daada60"]
+  vpc_security_group_ids = ["sg-087bbf47a2d760634"]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -154,7 +154,7 @@ resource "aws_instance" "cra_pub_server3" {
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.cra_pub_subnet2.id
   key_name        = "mse-svh105"
-  vpc_security_group_ids = ["sg-063eef2831daada60"]
+  vpc_security_group_ids = ["sg-087bbf47a2d760634"]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -175,7 +175,7 @@ resource "aws_instance" "cra_pub_server4" {
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.cra_pub_subnet2.id
   key_name        = "mse-svh105"
-  vpc_security_group_ids= ["sg-063eef2831daada60"]
+  vpc_security_group_ids= ["sg-087bbf47a2d760634"]
 
   user_data = <<-EOF
               #!/bin/bash
