@@ -49,7 +49,7 @@ variable "key_name" {
 variable "security_group_id" {
   description = "Security group ID for instances"
   type        = string
-  default     = "sg-063eef2831daada60"
+  default     = "sg-087bbf47a2d760634"
 }
 
 variable "load_balancer_names" {
