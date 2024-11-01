@@ -1,0 +1,11 @@
+aws_region           = "eu-central-1"
+vpc_cidr_block       = "10.150.0.0/16"
+public_subnet_cidrs  = ["10.150.1.0/24", "10.150.2.0/24"]
+private_subnet_cidrs = ["10.150.3.0/24"]
+availability_zones   = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
+instance_ami         = "ami-08ec94f928cf25a9d"
+instance_type        = "t2.micro"
+key_name             = "mse-svh105"
+security_group_id    = "sg-0f773836961ecdc1b"
+load_balancer_names  = ["CRA-LB1", "CRA-LB2"]
+target_group_names   = ["CRA-Target1", "CRA-Target2"]
