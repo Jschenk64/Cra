@@ -107,11 +107,11 @@ resource "aws_security_group" "cra_sg" {
 }
 
 resource "aws_instance" "cra_pub_server1" {
-  ami             = "ami-08ec94f928cf25a9d"
+  ami             = "ami-0084a47cc718c111a"
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.cra_pub_subnet1.id
   key_name        = "mse-svh105"
-  vpc_security_group_ids = ["sg-087bbf47a2d760634"]
+  vpc_security_group_ids = [aws_security_group.cra_sg.id]
 
 tags = {
     Name = "CRA-pub-server1"
@@ -119,11 +119,11 @@ tags = {
 }
 
 resource "aws_instance" "cra_pub_server2" {
-  ami             = "ami-08ec94f928cf25a9d"
+  ami             = "ami-0084a47cc718c111a"
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.cra_pub_subnet1.id
   key_name        = "mse-svh105"
-  vpc_security_group_ids = ["sg-087bbf47a2d760634"]
+  vpc_security_group_ids = [aws_security_group.cra_sg.id]
 
 
 tags = {
@@ -132,11 +132,11 @@ tags = {
 }
 
 resource "aws_instance" "cra_pub_server3" {
-  ami             = "ami-08ec94f928cf25a9d"
+  ami             = "ami-0084a47cc718c111a"
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.cra_pub_subnet2.id
   key_name        = "mse-svh105"
-  vpc_security_group_ids = ["sg-087bbf47a2d760634"]
+  vpc_security_group_ids = [aws_security_group.cra_sg.id]
 
 
 tags = {
@@ -145,11 +145,11 @@ tags = {
 }
 
 resource "aws_instance" "cra_pub_server4" {
-  ami             = "ami-08ec94f928cf25a9d"
+  ami             = "ami-0084a47cc718c111a"
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.cra_pub_subnet2.id
   key_name        = "mse-svh105"
-  vpc_security_group_ids= ["sg-087bbf47a2d760634"]
+  vpc_security_group_ids= [aws_security_group.cra_sg.id]
 
   
 tags = {
