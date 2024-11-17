@@ -18,7 +18,7 @@ resource "aws_subnet" "cra_pub_subnet1" {
   availability_zone       = "eu-central-1a"
   map_public_ip_on_launch = true
 
-  tags = {
+tags = {
     Name = "CRA-pub-subnet1"
   }
 }
@@ -29,7 +29,7 @@ resource "aws_subnet" "cra_pub_subnet2" {
   availability_zone       = "eu-central-1b"
   map_public_ip_on_launch = true
 
-  tags = {
+tags = {
     Name = "CRA-pub-subnet2"
   }
 }
@@ -113,6 +113,15 @@ resource "aws_instance" "cra_pub_server1" {
   key_name        = "mse-svh105"
   vpc_security_group_ids = ["sg-087bbf47a2d760634"]
 
+user_data = <<-EOF
+              #!/bin/bash
+              sudo su
+              yum update -y
+              yum install -y nginx
+              systemctl start nginx
+              systemctl enable nginx
+              EOF
+
   tags = {
     Name = "CRA-pub-server1"
   }
@@ -125,6 +134,16 @@ resource "aws_instance" "cra_pub_server2" {
   key_name        = "mse-svh105"
   vpc_security_group_ids = ["sg-087bbf47a2d760634"]
 
+user_data = <<-EOF
+              #!/bin/bash
+              sudo su
+              yum update -y
+              yum install -y httpd
+              systemctl start httpd
+              systemctl enable httpd
+              echo "<h1> This is my journey to Devops $(hostname -f) in AZ $EC2_AVAIL_ZONE </h1>" > /var/www/html/index.html
+              EOF
+
   tags = {
     Name = "CRA-pub-server2"
   }
@@ -136,6 +155,15 @@ resource "aws_instance" "cra_pub_server3" {
   subnet_id       = aws_subnet.cra_pub_subnet2.id
   key_name        = "mse-svh105"
   vpc_security_group_ids = ["sg-087bbf47a2d760634"]
+
+user_data = <<-EOF
+              #!/bin/bash
+              sudo su
+              yum update -y
+              yum install -y nginx
+              systemctl start nginx
+              systemctl enable nginx
+              EOF
 
   tags = {
     Name = "CRA-pub-server3"
