@@ -18,7 +18,7 @@ resource "aws_subnet" "cra_pub_subnet1" {
   availability_zone       = "eu-central-1a"
   map_public_ip_on_launch = true
 
-tags = {
+  tags = {
     Name = "CRA-pub-subnet1"
   }
 }
@@ -29,20 +29,32 @@ resource "aws_subnet" "cra_pub_subnet2" {
   availability_zone       = "eu-central-1b"
   map_public_ip_on_launch = true
 
-tags = {
+  tags = {
     Name = "CRA-pub-subnet2"
   }
 }
 
-resource "aws_subnet" "cra_priv_subnet1" {
+resource "aws_subnet" "cra_pub_subnet3" {
   vpc_id            = aws_vpc.cra_vpc.id
   cidr_block        = "10.150.3.0/24"
-  availability_zone = "eu-central-1c"
+  availability_zone = "eu-central-1a"
 
   tags = {
-    Name = "CRA-priv-subnet1"
+    Name = "CRA-pub-subnet3"
   }
 }
+
+
+resource "aws_subnet" "cra_pub_subnet4" {
+  vpc_id            = aws_vpc.cra_vpc.id
+  cidr_block        = "10.150.4.0/24"
+  availability_zone = "eu-central-1b"
+
+  tags = {
+    Name = "CRA-pub-subnet4"
+  }
+}
+
 
 resource "aws_internet_gateway" "cra_igw" {
   vpc_id = aws_vpc.cra_vpc.id
@@ -72,6 +84,16 @@ resource "aws_route_table_association" "pub_subnet1_assoc" {
 
 resource "aws_route_table_association" "pub_subnet2_assoc" {
   subnet_id      = aws_subnet.cra_pub_subnet2.id
+  route_table_id = aws_route_table.cra_pub_rt.id
+}
+
+resource "aws_route_table_association" "pub_subnet3_assoc" {
+  subnet_id      = aws_subnet.cra_pub_subnet3.id
+  route_table_id = aws_route_table.cra_pub_rt.id
+}
+
+resource "aws_route_table_association" "pub_subnet4_assoc" {
+  subnet_id      = aws_subnet.cra_pub_subnet4.id
   route_table_id = aws_route_table.cra_pub_rt.id
 }
 
@@ -106,99 +128,172 @@ resource "aws_security_group" "cra_sg" {
   }
 }
 
-resource "aws_instance" "cra_pub_server1" {
-  ami             = "ami-0084a47cc718c111a"
-  instance_type   = "t2.micro"
-  subnet_id       = aws_subnet.cra_pub_subnet1.id
-  key_name        = "mse-svh105"
+resource "aws_instance" "cra_Srv1" {
+  ami                    = "ami-0084a47cc718c111a"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.cra_pub_subnet1.id
+  key_name               = "mse-svh105"
   vpc_security_group_ids = [aws_security_group.cra_sg.id]
 
-tags = {
-    Name = "CRA-pub-server1"
+  tags = {
+    Name = "CRA-Srv1"
   }
 }
 
-resource "aws_instance" "cra_pub_server2" {
-  ami             = "ami-0084a47cc718c111a"
-  instance_type   = "t2.micro"
-  subnet_id       = aws_subnet.cra_pub_subnet1.id
-  key_name        = "mse-svh105"
+resource "aws_instance" "cra_Srv2" {
+  ami                    = "ami-0084a47cc718c111a"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.cra_pub_subnet2.id
+  key_name               = "mse-svh105"
   vpc_security_group_ids = [aws_security_group.cra_sg.id]
 
 
-tags = {
-    Name = "CRA-pub-server2"
+  tags = {
+    Name = "CRA-Srv2"
   }
 }
 
-resource "aws_instance" "cra_pub_server3" {
-  ami             = "ami-0084a47cc718c111a"
-  instance_type   = "t2.micro"
-  subnet_id       = aws_subnet.cra_pub_subnet2.id
-  key_name        = "mse-svh105"
+resource "aws_instance" "cra_Srv3" {
+  ami                    = "ami-0084a47cc718c111a"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.cra_pub_subnet3.id
+  key_name               = "mse-svh105"
   vpc_security_group_ids = [aws_security_group.cra_sg.id]
 
 
-tags = {
-    Name = "CRA-pub-server3"
+  tags = {
+    Name = "CRA-Srv3"
   }
 }
 
-resource "aws_instance" "cra_pub_server4" {
-  ami             = "ami-0084a47cc718c111a"
-  instance_type   = "t2.micro"
-  subnet_id       = aws_subnet.cra_pub_subnet2.id
-  key_name        = "mse-svh105"
-  vpc_security_group_ids= [aws_security_group.cra_sg.id]
+resource "aws_instance" "cra_Srv4" {
+  ami                    = "ami-0084a47cc718c111a"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.cra_pub_subnet4.id
+  key_name               = "mse-svh105"
+  vpc_security_group_ids = [aws_security_group.cra_sg.id]
 
-  
-tags = {
-    Name = "CRA-pub-server4"
+
+  tags = {
+    Name = "CRA-Srv4"
   }
 }
 
 resource "aws_lb" "cra_lb1" {
-  name               = "CRA-LB1"
+  name            = "CRA-LB1"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.cra_sg.id]
-  subnets            = [aws_subnet.cra_pub_subnet1.id, aws_subnet.cra_pub_subnet2.id]
+  security_groups = [aws_security_group.cra_sg.id]
+  subnets         = [aws_subnet.cra_pub_subnet1.id, aws_subnet.cra_pub_subnet2.id]
 
+  
   tags = {
     Name = "CRA-LB1"
   }
 }
+
+# Listener for CRA-LB1
+resource "aws_lb_listener" "cra_lb1_http" {
+  load_balancer_arn = aws_lb.cra_lb1.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.cra_lb1_tg.arn
+  }
+}
+
+
 
 resource "aws_lb" "cra_lb2" {
   name               = "CRA-LB2"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.cra_sg.id]
-  subnets            = [aws_subnet.cra_pub_subnet1.id, aws_subnet.cra_pub_subnet2.id]
+  subnets            = [aws_subnet.cra_pub_subnet3.id, aws_subnet.cra_pub_subnet4.id]
+
+  
 
   tags = {
     Name = "CRA-LB2"
   }
 }
 
-resource "aws_lb_target_group" "cra_target1" {
-  name     = "CRA-Target1"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.cra_vpc.id
+# Listener for CRA-LB2
+resource "aws_lb_listener" "cra_lb2_http" {
+  load_balancer_arn = aws_lb.cra_lb2.arn
+  port              = 80
+  protocol          = "HTTP"
 
-  tags = {
-    Name = "CRA-Target1"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.cra_lb2_tg.arn
   }
 }
 
-resource "aws_lb_target_group" "cra_target2" {
-  name     = "CRA-Target2"
+resource "aws_lb_target_group" "cra_lb1_tg" {
+  name     = "CRA-LB1-TG"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.cra_vpc.id
 
-  tags = {
-    Name = "CRA-Target2"
+  health_check {
+    interval            = 30
+    path                = "/"
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    
   }
+
+  tags = {
+    Name = "CRA-LB1-TG"
+  }
+}
+
+resource "aws_lb_target_group" "cra_lb2_tg" {
+  name     = "CRA-LB2-TG"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.cra_vpc.id
+
+  health_check {
+    interval            = 30
+    path                = "/"
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    
+  }
+
+  tags = {
+    Name = "CRA-LB2-TG"
+  }
+}
+
+
+
+resource "aws_lb_target_group_attachment" "cra_3_attach_Srv1" {
+  target_group_arn = aws_lb_target_group.cra_lb1_tg.arn
+  target_id        = aws_instance.cra_Srv1.id
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "cra_3_attach_Srv2" {
+  target_group_arn = aws_lb_target_group.cra_lb1_tg.arn
+  target_id        = aws_instance.cra_Srv2.id
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "cra_3_attach_Srv3" {
+  target_group_arn = aws_lb_target_group.cra_lb2_tg.arn
+  target_id        = aws_instance.cra_Srv3.id
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "cra_3_attach_Srv4" {
+  target_group_arn = aws_lb_target_group.cra_lb2_tg.arn
+  target_id        = aws_instance.cra_Srv4.id
+  port             = 80
 }

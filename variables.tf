@@ -31,7 +31,7 @@ variable "availability_zones" {
 variable "instance_ami" {
   description = "AMI ID for instances"
   type        = string
-  default     = "ami-08ec94f928cf25a9d"
+  default     = "ami-0084a47cc718c111a"
 }
 
 variable "instance_type" {
@@ -49,7 +49,7 @@ variable "key_name" {
 variable "security_group_id" {
   description = "Security group ID for instances"
   type        = string
-  default     = "sg-087bbf47a2d760634"
+  default     = "aws_security_group.cra_sg.id"
 }
 
 variable "load_balancer_names" {
@@ -63,3 +63,5 @@ variable "target_group_names" {
   type        = list(string)
   default     = ["CRA-Target1", "CRA-Target2"]
 }
+
+#terraform-docs markdown table . > README.md
